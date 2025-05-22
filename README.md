@@ -1,4 +1,4 @@
-## Hi there 👋
+## 세상은 넓고 내 취향 남자는 너무 많다...
 
 <!--
 **loveandevol/loveandevol** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
