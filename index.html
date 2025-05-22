@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>채팅 생성기</title>
+  <style>
+    body {
+      font-family: "Pretendard Variable", "Pretendard JP Variable", serif;
+      padding: 20px;
+      background: #fafafa;
+    }
+
+    h1 {
+      font-size: 1.5em;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 6px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .chat-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      font-family: "Pretendard Variable", "Pretendard JP Variable", serif;
+      padding: 10px;
+    }
+
+    .chat-row {
+      display: flex;
+      align-items: start;
+    }
+
+    .chat-row.right {
+      justify-content: flex-end;
+    }
+
+    .chat-row.leftt {
+      justify-content: flex-start;
+    }
+
+    .chat-bb {
+      font-size: 1.3em;
+      padding: .9em 1.2em;
+      width: auto;
+      max-width: 65%;
+      position: relative;
+      filter: drop-shadow(0 0 0.35rem #00000010);
+      word-break: break-word;
+      overflow-wrap: break-word;
+      line-height: 1;
+      margin-top: .3em;
+    }
+
+    .chat-bb p {
+      all: unset;
+      line-height: 1.5;
+    }
+
+    .chat-bb.right {
+      background: linear-gradient(#ffffff50,#ffffff 80%) border-box;
+      color: #5D5D68;
+      border-radius: 27px 1px 27px 27px;
+      text-align: left;
+      margin-left: auto;
+      border: 1px solid white;
+    }
+
+    .chat-profile-r {
+      width: 60px;
+      height: 60px;
+      margin-left: 10px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .chat-bb.leftt {
+      background: linear-gradient(transparent 80%,#ffbeaa30) border-box;
+      background-color: #5D5D68;
+      color: white;
+      border-radius: 1px 27px 27px 27px;
+      text-align: left;
+      margin-right: auto;
+    }
+
+    .chat-profile-l {
+      width: 60px;
+      height: 60px;
+      margin-right: 10px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .chat-wrap {padding: 10px 0; gap: 12px;}
+      .chat-bb {font-size: 1.3em; padding: .6em 1em; max-width: 65%;}
+      .chat-bb.right{border-radius: 22px 1px 22px 22px;}
+      .chat-bb.leftt{border-radius: 1px 22px 22px 22px;}
+      .chat-profile-r, .chat-profile-l{width: 45px; height: 45px;}
+      .chat-bb p{line-height: 1.4; }
+    }
+
+    .result-wrap {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-top: 30px;
+      position: relative;
+      background: white;
+    }
+
+    .copy-btn {
+     
+      bottom: 10px;
+      right: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>채팅 생성</h1>
+
+  <label>종류</label><br>
+  <label><input type="radio" name="type" value="leftt"> 왼</label>
+  <label><input type="radio" name="type" value="right" checked> 오</label><br><br>
+
+  <label>프로필 사진</label><br>
+  <input type="text" placeholder="링크를 넣어주세요"><br>
+
+  <label>채팅 내용</label><br>
+  <input type="text" placeholder="채팅 내용을 입력해주세요"><br>
+
+  <button onclick="generateCode()">코드 생성</button>
+  <button onclick="clearChat()">초기화</button>
+
+  <div class="result-wrap">
+    <h2>채팅 생성</h2>
+    <div class="chat-wrap"></div>
+    <button onclick="copyCode()" class="copy-btn">복사</button>
+  </div>
+
+  <script>
+    function generateCode() {
+      const type = document.querySelector('input[name="type"]:checked').value;
+      const profile = document.getElementById('profile').value;
+      const content = document.getElementById('content').value;
+      const result = document.getElementById('result');
+
+      let div = document.createElement("div");
+      div.className = "chat-row " + type;
+
+      let bubble = document.createElement("div");
+      bubble.className = "chat-bb " + type;
+      bubble.innerHTML = `<p>${content}</p>`;
+
+      let profileDiv = document.createElement("div");
+      profileDiv.className = (type === "right") ? "chat-profile-r" : "chat-profile-l";
+      profileDiv.style.backgroundImage = `url('${profile}')`;
+
+      if (type === "right") {
+        div.appendChild(bubble);
+        div.appendChild(profileDiv);
+      } else {
+        div.appendChild(profileDiv);
+        div.appendChild(bubble);
+      }
+
+      result.appendChild(div);
+    }
+
+    function copyCode() {
+      const result = document.getElementById('result');
+      const temp = document.createElement("textarea");
+      temp.value = result.innerHTML;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      document.body.removeChild(temp);
+      \("코드가 복사되었습니다!");
+    }
+
+    function clearChat() {
+      document.getElementById('result').innerHTML = "";
+    }
+  </script>
+</body>
+</html>
